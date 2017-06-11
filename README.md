@@ -5,4 +5,5 @@ The python program first defines a function to properly recontitute the data in 
 The following are codes to create two views used in the main python program:
 
 create view error as select count(*) as num, DATE(log.time) from log where status LIKE '%404%' group by DATE;
+
 create view total as select count(*) as num, DATE(log.time) from log group by DATE;
