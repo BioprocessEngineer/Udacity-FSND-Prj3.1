@@ -24,7 +24,7 @@ def tab(c, results):
 
 db = psycopg2.connect(database=DBNAME)
 c = db.cursor()
-c.execute("select count(log.path) as Views, articles.title from log, articles where log.status LIKE '%OK%' AND log.path LIKE CONCAT('%', articles.slug, '%') group by articles.title order by Views desc;")
+c.execute("select count(log.path) as Views, articles.title from log, articles where log.status LIKE '%OK%' AND log.path LIKE CONCAT('%', articles.slug, '%') group by articles.title order by Views desc limit 3;")
 results = c.fetchall()
 tab(c, results)
 
