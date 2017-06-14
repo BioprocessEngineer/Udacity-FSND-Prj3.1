@@ -25,15 +25,27 @@ def tab(c, results):
 
 db = psycopg2.connect(database=DBNAME)
 c = db.cursor()
-c.execute("select count(log.path) as Views, articles.title from log, articles where log.status LIKE '%OK%' AND log.path LIKE CONCAT('%', articles.slug, '%') group by articles.title order by Views desc limit 3;")
+c.execute("""select count(log.path) as Views, articles.title from log, articles 
+	where log.status LIKE '%OK%' AND log.path LIKE CONCAT('%', articles.slug, '%') 
+	group by articles.title 
+	order by Views desc 
+	limit 3;""")
 results = c.fetchall()
 tab(c, results)
 
-c.execute("select count(log.path) as Views, authors.name from log, articles, authors where log.status LIKE '%OK%' AND log.path LIKE CONCAT('%', articles.slug, '%') AND articles.author=authors.id group by authors.name order by Views desc;")
+c.execute("""select count(log.path) as Views, authors.name from log, articles, authors 
+	where log.status LIKE '%OK%' 
+	AND log.path LIKE CONCAT('%', articles.slug, '%') 
+	AND articles.author=authors.id 
+	group by authors.name 
+	order by Views desc;""")
 results = c.fetchall()
 tab(c, results)
 
-c.execute("select error.num * 100.0/ total.num as error_percentage, total.date from error, total where error.date=total.date AND (error.num * 100.0/ total.num) > 2;")
+c.execute("""select error.num * 100.0/ total.num as error_percentage, total.date 
+	from error, total 
+	where error.date=total.date 
+	AND (error.num * 100.0/ total.num) > 2;""")
 results = c.fetchall()
 tab(c, results)
 db.close()
